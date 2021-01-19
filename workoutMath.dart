@@ -7,11 +7,11 @@ class WorkoutMath {
     return rm;
   }
 
-  static List<double> relativeIntensity(reps, weight, rm) {
+  static double relativeIntensity(reps, weight, rm) {
     double maxWeight = rm * (1.0278 - 0.0278 * reps);
     double ai = (weight) / rm;
     double ri = ai / (maxWeight / rm);
-    return [ai, ri];
+    return ri;
   }
 
   static double increasedAi(int reps, double desiredRi) {
