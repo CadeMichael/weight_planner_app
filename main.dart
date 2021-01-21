@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:weight_planner_app/storage.dart';
 import 'workoutMath.dart';
 import 'relativeInt.dart';
+import 'exercise.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
+import 'package:hive/hive.dart';
 
-void main() => runApp(
-      MaterialApp(
-        home: Max(),
-      ),
-    );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final directory = await pathProvider.getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
+  Hive.registerAdapter(ExerciseAdapter());
+  var box = await Hive.openBox('exercises');
+  runApp(
+    MaterialApp(
+      home: Max(),
+    ),
+  );
+}
 
 class Max extends StatefulWidget {
   @override
@@ -117,6 +128,7 @@ class _MaxState extends State<Max> {
                         ),
                 ),
                 FloatingActionButton(
+                  heroTag: 'button1',
                   child: Icon(Icons.autorenew),
                   splashColor: Colors.red,
                   onPressed: getMax,
@@ -130,6 +142,20 @@ class _MaxState extends State<Max> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => RelativeInt(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: ElevatedButton(
+                    child: Text("Storage"),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Storage(),
                         ),
                       );
                     },

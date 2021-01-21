@@ -2,12 +2,6 @@ import 'package:flutter/material.dart';
 import 'workoutMath.dart';
 import 'main.dart';
 
-void main() => runApp(
-      MaterialApp(
-        home: RelativeInt(),
-      ),
-    );
-
 class RelativeInt extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -37,8 +31,8 @@ class _RelativeIntState extends State<RelativeInt> {
       int reps = int.parse(repS);
       double weight = (double.parse(weightS));
       double rm = double.parse(rmS);
-      rel = WorkoutMath.relativeIntensity(reps, weight, rm).floor();
-      relS = (rel * 100).toString() + "%";
+      rel = (WorkoutMath.relativeIntensity(reps, weight, rm) * 100).floor();
+      relS = (rel).toString() + "%";
     } catch (e) {
       relS = "";
     }
@@ -63,7 +57,7 @@ class _RelativeIntState extends State<RelativeInt> {
       double desiredRel = (double.parse(newRelS));
       double rm = double.parse(relRmS);
       newRel = WorkoutMath.increasedAi(reps, desiredRel);
-      relWeightS = (newRel * rm).toString();
+      relWeightS = (newRel * rm).floor().toString();
     } catch (e) {
       relWeightS = "";
     }
@@ -250,6 +244,7 @@ class _RelativeIntState extends State<RelativeInt> {
                         ),
                 ),
                 FloatingActionButton(
+                  heroTag: 'button2',
                   child: Icon(Icons.autorenew),
                   splashColor: Colors.red,
                   onPressed: getNewRel,
