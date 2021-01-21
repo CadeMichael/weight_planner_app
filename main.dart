@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weight_planner_app/storage.dart';
+import 'storage.dart';
 import 'workoutMath.dart';
 import 'relativeInt.dart';
 import 'exercise.dart';
@@ -11,22 +11,26 @@ void main() async {
   final directory = await pathProvider.getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(ExerciseAdapter());
-  var box = await Hive.openBox('exercises');
+  var box = await Hive.openBox<Exercise>('exercises');
   runApp(
     MaterialApp(
-      home: Max(),
+      home: Max(box),
     ),
   );
 }
 
 class Max extends StatefulWidget {
+  final Box box;
+  Max(this.box);
   @override
   State<StatefulWidget> createState() {
-    return _MaxState();
+    return _MaxState(box);
   }
 }
 
 class _MaxState extends State<Max> {
+  final Box box;
+  _MaxState(this.box);
   final repCon = new TextEditingController();
   final weightCon = new TextEditingController();
   var _oneRepMax = "";
@@ -53,6 +57,20 @@ class _MaxState extends State<Max> {
     });
   }
 
+  final newNameCon = new TextEditingController();
+  final newWeightCon = new TextEditingController();
+  void add() {
+    var newExercise = Exercise(
+        newNameCon.text.toString(), int.parse(newWeightCon.text.toString()));
+    Box<Exercise> box;
+    box = Hive.box<Exercise>("exercises");
+    box.add(newExercise);
+    setState(() {
+      newNameCon.clear();
+      newWeightCon.clear();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -64,6 +82,9 @@ class _MaxState extends State<Max> {
           ),
           centerTitle: true,
         ),
+        drawer: Drawer(
+          child: Storage(box),
+        ),
         body: SingleChildScrollView(
           child: Container(
             alignment: Alignment.center,
@@ -73,7 +94,7 @@ class _MaxState extends State<Max> {
               children: [
                 Container(
                   width: 150,
-                  padding: EdgeInsets.fromLTRB(8, 64, 8, 32),
+                  padding: EdgeInsets.fromLTRB(8, 64, 8, 16),
                   child: TextField(
                     controller: repCon,
                     keyboardType: TextInputType.number,
@@ -108,7 +129,7 @@ class _MaxState extends State<Max> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(8, 32, 8, 16),
+                  margin: EdgeInsets.fromLTRB(8, 16, 8, 16),
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -133,29 +154,61 @@ class _MaxState extends State<Max> {
                   splashColor: Colors.red,
                   onPressed: getMax,
                 ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(16, 64, 16, 16),
+                  child: Text(
+                    "Keep Track of your Maxes",
+                    textScaleFactor: 2,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(8),
+                  child: TextField(
+                    controller: newNameCon,
+                    decoration: InputDecoration(
+                      labelText: 'name',
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10))),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(8),
+                  child: TextField(
+                    controller: newWeightCon,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'Weight',
+                      labelStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10))),
+                    ),
+                  ),
+                ),
+                FloatingActionButton(
+                  heroTag: 'button3',
+                  child: Icon(Icons.save),
+                  splashColor: Colors.red,
+                  onPressed: () => add(),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(32.0),
-                  child: ElevatedButton(
+                  child: RaisedButton(
                     child: Text("Relative Intensity"),
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RelativeInt(),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(32.0),
-                  child: ElevatedButton(
-                    child: Text("Storage"),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Storage(),
+                          builder: (context) => RelativeInt(box),
                         ),
                       );
                     },

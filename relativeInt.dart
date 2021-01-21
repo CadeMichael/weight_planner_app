@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'workoutMath.dart';
 import 'main.dart';
+import 'package:hive/hive.dart';
 
 class RelativeInt extends StatefulWidget {
+  final Box box;
+  RelativeInt(this.box);
   @override
   State<StatefulWidget> createState() {
-    return _RelativeIntState();
+    return _RelativeIntState(box);
   }
 }
 
 class _RelativeIntState extends State<RelativeInt> {
+  final Box box;
+  _RelativeIntState(this.box);
   final repCon = new TextEditingController();
   final weightCon = new TextEditingController();
   final rmCon = new TextEditingController();
@@ -251,13 +256,13 @@ class _RelativeIntState extends State<RelativeInt> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(32.0),
-                  child: ElevatedButton(
+                  child: RaisedButton(
                     child: Text("One Rep Max"),
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Max(),
+                          builder: (context) => Max(box),
                         ),
                       );
                     },
