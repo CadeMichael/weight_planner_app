@@ -36,5 +36,10 @@ dev_dependencies:
 ```
 
 ### Screen Shots
+| image | page |
+| --- | ---|
+| ![](ss1.png) | the Max page where you can save & calculate one rep maxes |
+| ![](ss2.png) | adding a new one rep max |
+| ![](ss3.png) | the maxes are stored in a Drawer() that lists them using ListView.Builder() |
+| ![](ss4.png) | the RelativeInt() where you can calculate the relative intensity of a given rep range and determine weight to be used for a desired relative intensity |
 
-![](ss1.png)
