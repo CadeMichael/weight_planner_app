@@ -20,6 +20,7 @@ class _StorageState extends State<Storage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.grey[100],
         appBar: AppBar(
           title: Text(
             "One rep Maxes",
@@ -36,7 +37,7 @@ class _StorageState extends State<Storage> {
               title: Text(exercise.name),
               subtitle: Text(exercise.weight.toString()),
               trailing: IconButton(
-                icon: Icon(Icons.delete),
+                icon: Icon(Icons.delete, color: Colors.red),
                 onPressed: () {
                   box.deleteAt(index);
                   setState(() {});

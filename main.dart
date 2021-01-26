@@ -14,6 +14,7 @@ void main() async {
   var box = await Hive.openBox<Exercise>('exercises');
   runApp(
     MaterialApp(
+      color: Colors.grey[100],
       home: Max(box),
     ),
   );
@@ -34,7 +35,6 @@ class _MaxState extends State<Max> {
   final repCon = new TextEditingController();
   final weightCon = new TextEditingController();
   var _oneRepMax = "";
-  List<Widget> columnForm = [];
 
   void getMax() {
     String repS = repCon.value.text;
@@ -151,7 +151,7 @@ class _MaxState extends State<Max> {
                 FloatingActionButton(
                   heroTag: 'button1',
                   child: Icon(Icons.autorenew),
-                  splashColor: Colors.red,
+                  splashColor: Colors.pink,
                   onPressed: getMax,
                 ),
                 Container(
