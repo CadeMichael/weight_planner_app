@@ -43,3 +43,4 @@ dev_dependencies:
 | ![](ss3.png) | the maxes are stored in a Drawer() that lists them using ListView.Builder() |
 | ![](ss4.png) | the RelativeInt() where you can calculate the relative intensity of a given rep range and determine weight to be used for a desired relative intensity |
 
+*GPLv3*
