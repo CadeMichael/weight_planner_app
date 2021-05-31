@@ -256,7 +256,7 @@ class _RelativeIntState extends State<RelativeInt> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(32.0),
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     child: Text("One Rep Max"),
                     onPressed: () {
                       Navigator.push(
