@@ -36,6 +36,7 @@ class _MaxState extends State<Max> {
   final weightCon = new TextEditingController();
   var _oneRepMax = "";
 
+  /// how to get the one rep max
   void getMax() {
     String repS = repCon.value.text;
     String weightS = weightCon.value.text;
@@ -61,9 +62,18 @@ class _MaxState extends State<Max> {
   final newWeightCon = new TextEditingController();
   void add() {
     var newExercise = Exercise(
-        newNameCon.text.toString(), int.parse(newWeightCon.text.toString()));
+        newNameCon.text.toString().trim(), int.parse(newWeightCon.text.toString()));
     Box<Exercise> box;
     box = Hive.box<Exercise>("exercises");
+    var currentKeys = box.values;
+    bool found = false;
+    List keyList = currentKeys.toList();
+    for (int i = 0; i < keyList.length && !found; i++) {
+      if (keyList[i].name == newExercise.name) {
+        box.deleteAt(i);
+        found = true;
+      }
+    }
     box.add(newExercise);
     setState(() {
       newNameCon.clear();
@@ -202,7 +212,7 @@ class _MaxState extends State<Max> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(32.0),
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     child: Text("Relative Intensity"),
                     onPressed: () {
                       Navigator.push(
